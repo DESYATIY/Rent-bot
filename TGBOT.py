@@ -5,6 +5,8 @@ from aiogram.filters import Command
 from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMarkup, InlineKeyboardButton
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 import gspread
+import os
+import json
 from google.oauth2.service_account import Credentials
 
 TOKEN = '7894416165:AAEiI81aOIkTizxzkpPVIPFiSCLEA9w0RSo'
@@ -26,13 +28,17 @@ main_kb = ReplyKeyboardMarkup(
     resize_keyboard=True
 )
 
+def get_credentials():
+    raw = os.environ["CREDENTIALS_JSON"]
+    return Credentials.from_service_account_info(json.loads(raw), scopes=["https://www.googleapis.com/auth/spreadsheets.readonly"])
+
 def load_bikes_from_sheet():
-    scopes = ["https://www.googleapis.com/auth/spreadsheets.readonly"]
-    credentials = Credentials.from_service_account_file("credentials.json", scopes=scopes)
+    credentials = get_credentials()
     gc = gspread.authorize(credentials)
     sheet = gc.open_by_key(SPREADSHEET_ID).worksheet("Bike")
     data = sheet.get_all_values()
     rows = data[1:]  # Пропускаем заголовки
+
 
     bikes = {}
     for row in rows:
