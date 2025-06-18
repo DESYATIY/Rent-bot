@@ -6,6 +6,8 @@ from aiogram.types import ReplyKeyboardMarkup, KeyboardButton, InlineKeyboardMar
 from aiogram.utils.keyboard import InlineKeyboardBuilder
 import gspread
 import os
+from dotenv import load_dotenv
+load_dotenv()
 import json
 from google.oauth2.service_account import Credentials
 
@@ -30,9 +32,10 @@ main_kb = ReplyKeyboardMarkup(
 )
 
 def get_credentials():
-    raw = os.environ["CREDENTIALS_JSON"]
-    fixed = raw.replace("\\n", "\n")  # <== Ось ця стрічка важлива!
-    return Credentials.from_service_account_info(json.loads(fixed), scopes=["https://www.googleapis.com/auth/spreadsheets.readonly"])
+    return Credentials.from_service_account_file(
+        os.environ["CREDENTIALS_FILE"],
+        scopes=["https://www.googleapis.com/auth/spreadsheets.readonly"]
+    )
 
 def load_bikes_from_sheet():
     credentials = get_credentials()
