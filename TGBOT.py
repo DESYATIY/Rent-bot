@@ -9,7 +9,8 @@ import os
 import json
 from google.oauth2.service_account import Credentials
 
-TOKEN = '7894416165:AAEiI81aOIkTizxzkpPVIPFiSCLEA9w0RSo'
+import os
+TOKEN = os.environ["BOT_TOKEN"]
 GOOGLE_MAPS_LINK = "https://maps.app.goo.gl/wsAj7p5Fb8FtcRWa7"
 SPREADSHEET_ID = "1syQja7ntuuv1mGP8BOapb0W1b8wTrV7Zce2ZOHnr4Ho"
 
