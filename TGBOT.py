@@ -31,7 +31,8 @@ main_kb = ReplyKeyboardMarkup(
 
 def get_credentials():
     raw = os.environ["CREDENTIALS_JSON"]
-    return Credentials.from_service_account_info(json.loads(raw), scopes=["https://www.googleapis.com/auth/spreadsheets.readonly"])
+    fixed = raw.replace("\\n", "\n")  # <== Ось ця стрічка важлива!
+    return Credentials.from_service_account_info(json.loads(fixed), scopes=["https://www.googleapis.com/auth/spreadsheets.readonly"])
 
 def load_bikes_from_sheet():
     credentials = get_credentials()
